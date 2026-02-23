@@ -1,6 +1,6 @@
 import streamlit as st
 
-from pdstools.decision_analyzer.utils import NBADScope_Mapping
+
 from da_streamlit_utils import (
     get_current_index,
     ensure_data,
@@ -52,7 +52,7 @@ st.plotly_chart(
         stage=st.session_state.stage,
         scope_options=scope_options,
     ),
-    use_container_width=True,
+    width="stretch",
 )
 
 if "scope" not in st.session_state:
@@ -61,7 +61,7 @@ if "scope" not in st.session_state:
 f"""
 ## Trend Chart
 
-Number of decisions that included at least one action from each {NBADScope_Mapping[st.session_state.scope]} over time.
+Number of decisions that included at least one action from each {st.session_state.scope} over time.
 
 Note: Since a decision can contain actions across multiple [issues/groups], the same decision may be counted in several categories, so the stacked total may exceed the actual sampled decision count.
 """
@@ -73,14 +73,14 @@ with st.container(border=True):
         st.warning(warning_message)
     st.plotly_chart(
         fig,
-        use_container_width=True,
+        width="stretch",
     )
 
     scope_index = get_current_index(scope_options, "scope")
     st.selectbox(
         "Granularity:",
         options=scope_options,
-        format_func=lambda option: NBADScope_Mapping[option],
+        # column names are already friendly
         index=scope_index,
         key="scope",
     )

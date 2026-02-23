@@ -5,7 +5,6 @@ from da_streamlit_utils import (
     st_priority_component_distribution,
 )
 
-from pdstools.decision_analyzer.utils import NBADScope_Mapping
 
 # # TODO Finish up to show effect on proposition distribution (side to side)
 
@@ -52,19 +51,19 @@ with st.container(border=True):
     with hist_tab:
         st.plotly_chart(
             histogram,
-            use_container_width=True,
+            width="stretch",
         )
     with box_tab:
         st.plotly_chart(
             box_plot,
-            use_container_width=True,
+            width="stretch",
         )
 
     scope_index = get_current_index(scope_options, "scope")
     st.selectbox(
         "Granularity:",
         options=scope_options,
-        format_func=lambda option: NBADScope_Mapping[option],
+        # column names are already friendly
         index=scope_index,
         key="scope",
     )

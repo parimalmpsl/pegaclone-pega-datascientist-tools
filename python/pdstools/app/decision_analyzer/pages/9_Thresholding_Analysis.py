@@ -58,7 +58,7 @@ with col1:
             x="Propensity",
             y="Decisions",
         ),
-        use_container_width=True,
+        width="stretch",
     )
 with col2:
     st.plotly_chart(
@@ -70,7 +70,7 @@ with col2:
             y="Decisions",
             log_y=True,  # TODO maybe make this a UI control
         ),
-        use_container_width=True,
+        width="stretch",
     )
 
 threshold_deciles_data = st.session_state.decision_data.getThresholdingData(
@@ -82,7 +82,7 @@ st.plotly_chart(
     st.session_state.decision_data.plot.threshold_deciles(
         thresholding_on, thresholding_mapping[thresholding_on]
     ),
-    use_container_width=True,
+    width="stretch",
 )
 
 # TODO fix this, not working properly. Filtering isn't working, should probably be on the
@@ -92,7 +92,7 @@ st.plotly_chart(
 # st.write(current_threshold)
 xxx = st.session_state.decision_data.getDistributionData(
     "Output",
-    ["pyIssue", "pyGroup"],
+    ["Issue", "Group"],
     additional_filters=(
         pl.col(f"{thresholding_on}_min") > current_threshold
     ),  # Hmm, probalby not the right way
@@ -101,8 +101,8 @@ xxx = st.session_state.decision_data.getDistributionData(
 st.write(
     st.session_state.decision_data.plot.distribution(
         xxx,
-        scope="pyIssue",
-        breakdown="pyGroup",
+        scope="Issue",
+        breakdown="Group",
         horizontal=True,
     )
 )

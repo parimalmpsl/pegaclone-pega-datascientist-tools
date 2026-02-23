@@ -73,11 +73,11 @@ if st.session_state.get("analysis_applied", False):
         lever_condition
     )
     interactions_survived_till_arbitration = (
-        relevant_interactions.select("pxInteractionID").collect().n_unique()
+        relevant_interactions.select("Interaction ID").collect().n_unique()
     )
     current_number_of_wins = (
         relevant_interactions.filter(pl.col("pxRank") == 1)
-        .select("pxInteractionID")
+        .select("Interaction ID")
         .collect()
         .n_unique()
     )
@@ -152,7 +152,7 @@ if st.session_state.get("analysis_applied", False):
         "In Arbitration",
         "Current Win Count",
     )
-    st.plotly_chart(original_fig, use_container_width=True)
+    st.plotly_chart(original_fig, width="stretch")
     # Parameter Distribution Analysis
     show_distributions = st.checkbox(
         "Show distribution of arbitration components",
@@ -171,7 +171,7 @@ if st.session_state.get("analysis_applied", False):
                     st.session_state.decision_data.arbitration_stage.filter(
                         lever_condition
                     )
-                    .select("pxInteractionID")
+                    .select("Interaction ID")
                     .unique()
                 )
 
@@ -182,7 +182,7 @@ if st.session_state.get("analysis_applied", False):
                             st.session_state.decision_data.stages_from_arbitration_down
                         )
                     )
-                    .join(relevant_interactions, on="pxInteractionID", how="inner")
+                    .join(relevant_interactions, on="Interaction ID", how="inner")
                     .with_columns(
                         segment=pl.when(lever_condition)
                         .then(pl.lit("Selected Actions"))
@@ -205,7 +205,7 @@ if st.session_state.get("analysis_applied", False):
                     )
 
                     fig = create_parameter_distribution_boxplots(segmented_df)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width="stretch")
     with st.expander("🎯 Boosting Strategies", expanded=False):
         st.markdown(f"""
         **1. Address funnel losses:** If {funnel_loss_pct:.2f}% filter-out rate is too high, investigate earlier decision stages to understand why your actions are eliminated.
@@ -244,7 +244,7 @@ if st.session_state.get("analysis_applied", False):
             "After Lever Adjustment",
             "New Win Count",
         )
-        st.plotly_chart(new_fig, use_container_width=True)
+        st.plotly_chart(new_fig, width="stretch")
 
         # Show summary statistics
         total_new_wins = new_plot_data["new_win_count"].sum()
